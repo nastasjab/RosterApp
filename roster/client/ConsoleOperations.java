@@ -296,6 +296,7 @@ class ConsoleOperations {
 
             System.out.println("Add another day to pattern (y/n)?: ");
             answer = getNotEmptyString();
+
             i++;
         }
         while (answer.equalsIgnoreCase("y"));
