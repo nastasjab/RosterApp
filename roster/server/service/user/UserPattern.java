@@ -11,6 +11,7 @@ public class UserPattern extends GenericObject {
     private long shiftPatternId;
     private Date startDay;
     private Date endDay;
+    private int patternStartDay;
 
     public UserPattern() {
     }
@@ -47,14 +48,22 @@ public class UserPattern extends GenericObject {
         this.endDay = endDay;
     }
 
+    public int getPatternStartDay() {
+        return patternStartDay;
+    }
+
+    public void setPatternStartDay(int patternStartDay) {
+        this.patternStartDay = patternStartDay;
+    }
+
     @Override
     public String toString() {
         StringBuilder stringBuilder = new StringBuilder();
         Format formatter = new SimpleDateFormat("yy.MM.dd");
         String endDayStr = endDay==null? "<open>" : formatter.format(endDay);
 
-        stringBuilder.append(String.format("%7d %7d %10s %10s",
-                userId, shiftPatternId, formatter.format(startDay), endDayStr));
+        stringBuilder.append(String.format("%7d %7d %10s %10s %10d",
+                userId, shiftPatternId, formatter.format(startDay), endDayStr, patternStartDay));
         return stringBuilder.toString();
     }
 }

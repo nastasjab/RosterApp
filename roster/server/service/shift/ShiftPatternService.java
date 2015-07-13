@@ -18,8 +18,8 @@ public class ShiftPatternService extends GenericService implements IShiftPattern
     }
 
     @Override
-    public void addShiftPattern(User user, ShiftPattern shiftTiming) throws ShiftPatternExistException, AdminAccessRequiredException {
-        checkAdminAuthUser(user);
+    public void addShiftPattern(User currentUser, ShiftPattern shiftTiming) throws ShiftPatternExistException, AdminAccessRequiredException {
+        checkAdminAuthUser(currentUser);
         if (getShiftPattern(shiftTiming.getTitle()) != null)
             throw new ShiftPatternExistException();
 
@@ -35,7 +35,9 @@ public class ShiftPatternService extends GenericService implements IShiftPattern
                         orElse(null);
     }
 
-    private ShiftPattern getShiftPattern(final long id) {
+    @Override
+    public ShiftPattern getShiftPattern(User currentUser, final long id) throws AdminAccessRequiredException {
+        checkAdminAuthUser(currentUser);
         return shiftTimings == null ? null :
                 shiftTimings.stream().
                         filter(p -> p.getId() == id).
@@ -45,17 +47,17 @@ public class ShiftPatternService extends GenericService implements IShiftPattern
 
 
     @Override
-    public void deleteShiftPattern(User user, long id) throws ShiftPatternNotExistException, AdminAccessRequiredException {
-        checkAdminAuthUser(user);
-        if (getShiftPattern(id)==null)
+    public void deleteShiftPattern(User currentUser, long id) throws ShiftPatternNotExistException, AdminAccessRequiredException {
+        checkAdminAuthUser(currentUser);
+        if (getShiftPattern(currentUser,id)==null)
             throw  new ShiftPatternNotExistException();
 
-        shiftTimings.remove(getShiftPattern(id));
+        shiftTimings.remove(getShiftPattern(currentUser, id));
     }
 
     @Override
-    public List<ShiftPattern> readShiftPatternList(User user) throws AdminAccessRequiredException {
-        checkAdminAuthUser(user);
+    public List<ShiftPattern> readShiftPatternList(User currentUser) throws AdminAccessRequiredException {
+        checkAdminAuthUser(currentUser);
         return shiftTimings;
     }
 

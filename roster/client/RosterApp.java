@@ -2,6 +2,10 @@ package client;
 
 import client.classifier.OperationType;
 import server.exception.*;
+import server.service.roster.IRosterService;
+import server.service.roster.Roster;
+import server.service.roster.RosterRequest;
+import server.service.roster.RosterService;
 import server.service.shift.IShiftPatternService;
 import server.service.shift.ShiftPattern;
 import server.service.shift.ShiftPatternService;
@@ -21,6 +25,7 @@ public class RosterApp implements IRosterApp {
 	private final IShiftTimingService shiftTimingService;
 	private final IShiftPatternService shiftPatternService;
 	private final IUserPatternService userPatternService;
+	private final IRosterService rosterService;
 	private User currentUser;
 	private final ConsoleOperations console;
 
@@ -31,6 +36,7 @@ public class RosterApp implements IRosterApp {
 		shiftTimingService = new ShiftTimingService();
 		shiftPatternService = new ShiftPatternService();
 		userPatternService = new UserPatternService();
+		rosterService = new RosterService();
 		console.showWelcome();
 	}
 
@@ -89,59 +95,21 @@ public class RosterApp implements IRosterApp {
 	}
 
 	@Override
-	public void listRosters() {
-
+	public void generateRosterForAll() throws InvalidNumberException, IOException, AdminAccessRequiredException {
+		RosterRequest request = console.getRosterRequest();
+		Roster roster = rosterService.generateRoster(currentUser, request);
+		console.showRoster(roster);
 	}
 
 	@Override
-	public void addRoster() {
+	public void generateRosterForInd() throws InvalidNumberException, IOException, AdminAccessRequiredException {
+		RosterRequest request = console.getRosterRequest();
+		request.setUserId(currentUser.getId());
+		Roster roster = rosterService.generateRoster(currentUser, request);
+		console.showRoster(roster);
 
 	}
 
-	@Override
-	public void showRoster() {
-
-	}
-
-	@Override
-	public void deleteRoster() {
-
-	}
-
-	@Override
-	public void modifyRoster() {
-
-	}
-
-	@Override
-	public void activateRoster() {
-
-	}
-
-	@Override
-	public void deActivateRoster() {
-
-	}
-
-	@Override
-	public void selectDay() {
-
-	}
-
-	@Override
-	public void addTurnEmployee() {
-
-	}
-
-	@Override
-	public void removeTurnEmployee() {
-
-	}
-
-	@Override
-	public void showMyRoster() {
-
-	}
 
 	@Override
 	public void login() throws InvalidPasswordException, IOException, UserNotExistException, InvalidUserTypeException {

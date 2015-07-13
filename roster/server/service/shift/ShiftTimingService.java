@@ -18,16 +18,17 @@ public class ShiftTimingService extends GenericService implements IShiftTimingSe
     }
 
     @Override
-    public void addShiftTiming(User user, ShiftTiming shiftTiming) throws ShiftTimingExistException, AdminAccessRequiredException {
-        checkAdminAuthUser(user);
-        if (getShiftPattern(shiftTiming.getTitle()) != null)
+    public void addShiftTiming(User currentUser, ShiftTiming shiftTiming) throws ShiftTimingExistException, AdminAccessRequiredException {
+        checkAdminAuthUser(currentUser);
+        if (getShiftTiming(currentUser, shiftTiming.getTitle()) != null)
             throw new ShiftTimingExistException();
 
         shiftTiming.setId(getNextId(shiftTimings));
         shiftTimings.add(shiftTiming);
     }
 
-    private ShiftTiming getShiftPattern(final String title) {
+    private ShiftTiming getShiftTiming(User currentUser, final String title) throws AdminAccessRequiredException {
+        checkAdminAuthUser(currentUser);
         return shiftTimings == null ? null :
                 shiftTimings.stream().
                         filter(p -> p.getTitle().equals(title)).
@@ -35,7 +36,9 @@ public class ShiftTimingService extends GenericService implements IShiftTimingSe
                         orElse(null);
     }
 
-    private ShiftTiming getShiftPattern(final long id) {
+    @Override
+    public ShiftTiming getShiftTiming(User currentUser, final long id) throws AdminAccessRequiredException {
+        checkAdminAuthUser(currentUser);
         return shiftTimings == null ? null :
                 shiftTimings.stream().
                         filter(p -> p.getId() == id).
@@ -45,17 +48,17 @@ public class ShiftTimingService extends GenericService implements IShiftTimingSe
 
 
     @Override
-    public void deleteShiftTiming(User user, long id) throws ShiftTimingNotExistException, AdminAccessRequiredException {
-        checkAdminAuthUser(user);
-        if (getShiftPattern(id)==null)
+    public void deleteShiftTiming(User currentUser, long id) throws ShiftTimingNotExistException, AdminAccessRequiredException {
+        checkAdminAuthUser(currentUser);
+        if (getShiftTiming(currentUser, id)==null)
             throw  new ShiftTimingNotExistException();
 
-        shiftTimings.remove(getShiftPattern(id));
+        shiftTimings.remove(getShiftTiming(currentUser, id));
     }
 
     @Override
-    public List<ShiftTiming> readShiftTimingList(User user) throws AdminAccessRequiredException {
-        checkAdminAuthUser(user);
+    public List<ShiftTiming> readShiftTimingList(User currentUser) throws AdminAccessRequiredException {
+        checkAdminAuthUser(currentUser);
         return shiftTimings;
     }
 

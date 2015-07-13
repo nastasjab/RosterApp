@@ -60,40 +60,11 @@ class EntryPoint {
                         rosterApp.addUserPattern();
                         break;
 
-                    case OperationType.SCHEDULE_LIST:
-                        rosterApp.listRosters();
+                    case OperationType.ROSTER_GENERATE_ALL:
+                        rosterApp.generateRosterForAll();
                         break;
-                    case OperationType.SCHEDULE_ADD:
-                        rosterApp.addRoster();
-                        break;
-                    case OperationType.SCHEDULE_DELETE:
-                        rosterApp.deleteRoster();
-                        break;
-                    case OperationType.SCHEDULE_SHOW:
-                        rosterApp.showRoster();
-                        break;
-                    case OperationType.SCHEDULE_MODIFY:
-                        rosterApp.modifyRoster();
-                        break;
-                    case OperationType.SCHEDULE_ACTIVATE:
-                        rosterApp.activateRoster();
-                        break;
-                    case OperationType.SCHEDULE_DEACTIVATE:
-                        rosterApp.deActivateRoster();
-                        break;
-
-                    case OperationType.DAY_SELECT:
-                        rosterApp.selectDay();
-                        break;
-                    case OperationType.DAY_ADD_EMPLOYEE:
-                        rosterApp.addTurnEmployee();
-                        break;
-                    case OperationType.DAY_REMOVE_EMPLOYEE:
-                        rosterApp.removeTurnEmployee();
-                        break;
-
-                    case OperationType.MY_SCHEDULE_SHOW:
-                        rosterApp.showMyRoster();
+                    case OperationType.ROSTER_GENERATE_IND:
+                        rosterApp.generateRosterForInd();
                         break;
 
                     default:

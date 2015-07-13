@@ -4,6 +4,8 @@ import client.classifier.OperationType;
 import server.exception.*;
 import server.classifier.UserType;
 import client.exception.*;
+import server.service.roster.Roster;
+import server.service.roster.RosterRequest;
 import server.service.shift.ShiftPattern;
 import server.service.shift.Shift;
 import server.service.shift.ShiftTiming;
@@ -47,11 +49,12 @@ class ConsoleOperations {
             System.out.println("ta) add shift timing      | pa) add shift pattern");
             System.out.println("td) delete shift timing   | pd) delete shift pattern");
             System.out.println("------------------------------------------------");
-            System.out.println("rl) list user patterns    | ra) add user pattern ");
+            System.out.println("nl) list user patterns    | na) add user pattern ");
+            System.out.println("ra) generate roster ");
             System.out.println("------------------------------------------------");
 
         } else  if (user!=null && user.getType().equals(UserType.USER) && user.isAuthenticated()){
-            System.out.println("my) show my schedule      | lo) logoff ");
+            System.out.println("ri) generate roster       | lo) logoff ");
             System.out.println("---------------------------------------------------------");
         } else {
             System.out.println("li) login ");
@@ -140,7 +143,7 @@ class ConsoleOperations {
             throw new PasswordsNotEqualException();
         user.setPlainPassword(password);
 
-        System.out.println("Enter user type (a-admin, g-guest):");
+        System.out.println("Enter user type (a-admin, u-user):");
         user.setType( getNotEmptyString());
 
         System.out.println("Enter first name:");
@@ -329,6 +332,9 @@ class ConsoleOperations {
         if (!date.equalsIgnoreCase("u"))
             userPattern.setEndDay(getDate(date));
 
+        System.out.println("Enter pattern start day (1 - default)");
+        userPattern.setPatternStartDay(getInt());
+
         return userPattern;
     }
 
@@ -339,10 +345,34 @@ class ConsoleOperations {
         if (checkEmptyList(userPatterns))
             return;
 
-        System.out.format("%7s %7s %10s %10s\n", "User", "Pattern", "Start", "End");
+        System.out.format("%7s %7s %10s %10s\n", "User", "Pattern", "Start", "End", "Pattern dat to start");
         System.out.println("-------------------------------------------");
         for (UserPattern userPattern: userPatterns) {
             System.out.println(userPattern.toString());
         }
+    }
+
+    public RosterRequest getRosterRequest() throws InvalidNumberException {
+        RosterRequest request = new RosterRequest();
+
+        System.out.println("#ROSTER GENERATE#");
+        System.out.println("Enter year: ");
+        // TODO check year
+        request.setYear(getInt());
+
+        System.out.println("Enter month: ");
+        // TODO check month
+        request.setMonth(getInt());
+
+        System.out.println("Enter shift timing id: ");
+        // TODO check month
+        request.setShiftTimingId(getLong());
+
+        return request;
+    }
+
+    public void showRoster(Roster roster) {
+        System.out.println();
+        roster.toString();
     }
 }

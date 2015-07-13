@@ -71,6 +71,10 @@ public class User extends GenericObject {
 		return name;
 	}
 
+	public String getNameSurname() {
+		return name+" "+surname;
+	}
+
 	public void setName(String name) {
 		this.name = name;
 	}

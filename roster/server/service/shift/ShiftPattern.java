@@ -28,6 +28,10 @@ public class ShiftPattern extends GenericObject{
          dayDefinitions.add(day);
     }
 
+    public int getPatternLength(){
+        return (dayDefinitions==null) ? 0 : dayDefinitions.size();
+    }
+
     public List<String> getDayDefinitions() {
         return dayDefinitions;
     }

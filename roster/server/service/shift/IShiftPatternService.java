@@ -8,7 +8,9 @@ import service.exception.AdminAccessRequiredException;
 import java.util.List;
 
 public interface IShiftPatternService {
-    void addShiftPattern(User user, ShiftPattern shiftPattern) throws ShiftPatternExistException, AdminAccessRequiredException;
-    void deleteShiftPattern(User user, long id) throws ShiftPatternNotExistException, AdminAccessRequiredException;
-    List<ShiftPattern> readShiftPatternList(User user) throws AdminAccessRequiredException;
+    void addShiftPattern(User currentUser, ShiftPattern shiftPattern) throws ShiftPatternExistException, AdminAccessRequiredException;
+    void deleteShiftPattern(User currentUser, long id) throws ShiftPatternNotExistException, AdminAccessRequiredException;
+    List<ShiftPattern> readShiftPatternList(User currentUser) throws AdminAccessRequiredException;
+
+    ShiftPattern getShiftPattern(User currentUser, final long id) throws AdminAccessRequiredException;
 }

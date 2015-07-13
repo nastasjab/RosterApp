@@ -19,21 +19,8 @@ public interface IRosterApp {
     void listUserPatterns() throws AdminAccessRequiredException;
     void addUserPattern() throws InvalidNumberException, AdminAccessRequiredException, InvalidDateException;
 
-    void listRosters();
-    void addRoster();
-    void showRoster();
-    void deleteRoster();
-    void modifyRoster();
-    void activateRoster();
-    void deActivateRoster();
-
-    void selectDay();
-    void addTurnEmployee();
-    void removeTurnEmployee();
-
-    void showMyRoster();
-    //void sendTurnChangeRequestToAdmin();
-    //void sendTurnChangeRequestToUser();
+    void generateRosterForAll() throws InvalidNumberException, IOException, AdminAccessRequiredException;
+    void generateRosterForInd() throws InvalidNumberException, IOException, AdminAccessRequiredException;
 
     void login() throws InvalidPasswordException, IOException, UserNotExistException, InvalidUserTypeException;
     void logoff();
@@ -41,7 +28,6 @@ public interface IRosterApp {
 
     void addUser() throws PasswordsNotEqualException, InvalidUserTypeException, IOException, UserExistException, InvalidEmailAddressException;
     void listUser() throws IOException;
-    //void modifyUser();
     void deleteUser() throws IOException, UserNotExistException;
 
     OperationType offerOperations() throws IllegalOperationException, OperationAdminException;
