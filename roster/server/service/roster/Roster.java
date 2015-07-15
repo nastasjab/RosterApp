@@ -19,11 +19,11 @@ public class Roster extends GenericObject {
     public Roster() {
     }
 
-    public Roster(int year, int month, long shiftTimingId, User currentUser) throws AdminAccessRequiredException {
+    public Roster(int year, int month, long shiftTimingId) throws AdminAccessRequiredException {
         this.year = year;
         this.month = month;
         IShiftTimingService shiftTimingService = new ShiftTimingService();
-        shiftTiming =  shiftTimingService.getShiftTiming(currentUser, shiftTimingId);
+        shiftTiming =  shiftTimingService.getShiftTiming( shiftTimingId);
     }
 
     public int getYear() {
@@ -79,7 +79,8 @@ public class Roster extends GenericObject {
     public String toString() {
         StringBuilder str = new StringBuilder();
         str.append(String.format("Year: %d  Month: %d\n", year, month));
-// TODO print info about shift timing
+        str.append(shiftTiming.toString());
+        str.append("\n");
 
         if (usersRoster.isEmpty()) {
             str.append("<empty>");

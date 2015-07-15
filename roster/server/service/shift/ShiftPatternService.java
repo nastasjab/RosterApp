@@ -11,6 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ShiftPatternService extends GenericService implements IShiftPatternService {
+    // TODO remove static here, when DB is used
     private static List<ShiftPattern> shiftPatterns;
 
     public ShiftPatternService() {
@@ -21,8 +22,8 @@ public class ShiftPatternService extends GenericService implements IShiftPattern
         shiftPatterns = new ArrayList<>();}
 
     @Override
-    public void addShiftPattern(User currentUser, ShiftPattern shiftPattern) throws ShiftPatternExistException, AdminAccessRequiredException {
-        checkAdminAuthUser(currentUser);
+    public void addShiftPattern(User loggedUser, ShiftPattern shiftPattern) throws ShiftPatternExistException, AdminAccessRequiredException {
+        checkAdminAuthUser(loggedUser);
         if (getShiftPattern(shiftPattern.getTitle()) != null)
             throw new ShiftPatternExistException();
 
@@ -39,8 +40,7 @@ public class ShiftPatternService extends GenericService implements IShiftPattern
     }
 
     @Override
-    public ShiftPattern getShiftPattern(User currentUser, final long id) throws AdminAccessRequiredException {
-        checkAdminAuthUser(currentUser);
+    public ShiftPattern getShiftPattern(final long id) throws AdminAccessRequiredException {
         return shiftPatterns == null ? null :
                 shiftPatterns.stream().
                         filter(p -> p.getId() == id).
@@ -50,17 +50,16 @@ public class ShiftPatternService extends GenericService implements IShiftPattern
 
 
     @Override
-    public void deleteShiftPattern(User currentUser, long id) throws ShiftPatternNotExistException, AdminAccessRequiredException {
-        checkAdminAuthUser(currentUser);
-        if (getShiftPattern(currentUser,id)==null)
+    public void deleteShiftPattern(User loggedUser, long id) throws ShiftPatternNotExistException, AdminAccessRequiredException {
+        checkAdminAuthUser(loggedUser);
+        if (getShiftPattern(id)==null)
             throw  new ShiftPatternNotExistException();
 
-        shiftPatterns.remove(getShiftPattern(currentUser, id));
+        shiftPatterns.remove(getShiftPattern(id));
     }
 
     @Override
-    public List<ShiftPattern> readShiftPatternList(User currentUser) throws AdminAccessRequiredException {
-        checkAdminAuthUser(currentUser);
+    public List<ShiftPattern> readShiftPatternList() throws AdminAccessRequiredException {
         return shiftPatterns;
     }
 

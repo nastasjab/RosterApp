@@ -9,9 +9,9 @@ import java.util.List;
 public interface IShiftTimingService {
     void initialize();
 
-    void addShiftTiming(User currentUser, ShiftTiming shiftTiming) throws ShiftTimingExistException, AdminAccessRequiredException;
-    void deleteShiftTiming(User currentUser, long id) throws ShiftTimingNotExistException, AdminAccessRequiredException;
-    List<ShiftTiming> readShiftTimingList(User currentUser) throws AdminAccessRequiredException;
+    void addShiftTiming(User loggedUser, ShiftTiming shiftTiming) throws ShiftTimingExistException, AdminAccessRequiredException;
+    void deleteShiftTiming(User loggedUser, long id) throws ShiftTimingNotExistException, AdminAccessRequiredException;
+    List<ShiftTiming> readShiftTimingList() throws AdminAccessRequiredException;
 
-    ShiftTiming getShiftTiming(User currentUser, long shiftTimingId) throws AdminAccessRequiredException;
+    ShiftTiming getShiftTiming(long shiftTimingId) throws AdminAccessRequiredException;
 }

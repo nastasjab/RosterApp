@@ -11,7 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ShiftTimingService extends GenericService implements IShiftTimingService {
-    // TODO remove static here, when
+    // TODO remove static here, when DB is used
     private static List<ShiftTiming> shiftTimings;
 
     public ShiftTimingService() {
@@ -21,17 +21,16 @@ public class ShiftTimingService extends GenericService implements IShiftTimingSe
     public void initialize(){shiftTimings = new ArrayList<>();}
 
     @Override
-    public void addShiftTiming(User currentUser, ShiftTiming shiftTiming) throws ShiftTimingExistException, AdminAccessRequiredException {
-        checkAdminAuthUser(currentUser);
-        if (getShiftTiming(currentUser, shiftTiming.getTitle()) != null)
+    public void addShiftTiming(User loggedUser, ShiftTiming shiftTiming) throws ShiftTimingExistException, AdminAccessRequiredException {
+        checkAdminAuthUser(loggedUser);
+        if (getShiftTiming(shiftTiming.getTitle()) != null)
             throw new ShiftTimingExistException();
 
         shiftTiming.setId(getNextId(shiftTimings));
         shiftTimings.add(shiftTiming);
     }
 
-    private ShiftTiming getShiftTiming(User currentUser, final String title) throws AdminAccessRequiredException {
-        checkAdminAuthUser(currentUser);
+    private ShiftTiming getShiftTiming(final String title) throws AdminAccessRequiredException {
         return shiftTimings == null ? null :
                 shiftTimings.stream().
                         filter(p -> p.getTitle().equals(title)).
@@ -40,8 +39,7 @@ public class ShiftTimingService extends GenericService implements IShiftTimingSe
     }
 
     @Override
-    public ShiftTiming getShiftTiming(User currentUser, final long id) throws AdminAccessRequiredException {
-        checkAdminAuthUser(currentUser);
+    public ShiftTiming getShiftTiming(final long id) throws AdminAccessRequiredException {
         return shiftTimings == null ? null :
                 shiftTimings.stream().
                         filter(p -> p.getId() == id).
@@ -51,17 +49,16 @@ public class ShiftTimingService extends GenericService implements IShiftTimingSe
 
 
     @Override
-    public void deleteShiftTiming(User currentUser, long id) throws ShiftTimingNotExistException, AdminAccessRequiredException {
-        checkAdminAuthUser(currentUser);
-        if (getShiftTiming(currentUser, id)==null)
+    public void deleteShiftTiming(User loggedUser, long id) throws ShiftTimingNotExistException, AdminAccessRequiredException {
+        checkAdminAuthUser(loggedUser);
+        if (getShiftTiming( id)==null)
             throw  new ShiftTimingNotExistException();
 
-        shiftTimings.remove(getShiftTiming(currentUser, id));
+        shiftTimings.remove(getShiftTiming(id));
     }
 
     @Override
-    public List<ShiftTiming> readShiftTimingList(User currentUser) throws AdminAccessRequiredException {
-        checkAdminAuthUser(currentUser);
+    public List<ShiftTiming> readShiftTimingList() throws AdminAccessRequiredException {
         return shiftTimings;
     }
 

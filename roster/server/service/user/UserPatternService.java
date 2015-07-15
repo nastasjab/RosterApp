@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class UserPatternService extends GenericService implements  IUserPatternService {
+    // TODO remove static here, when DB is used
     private static List<UserPattern> userPatterns;
 
     public UserPatternService() {
@@ -18,17 +19,16 @@ public class UserPatternService extends GenericService implements  IUserPatternS
         userPatterns = new ArrayList<>();}
 
     @Override
-    public void addUserPattern(User user, UserPattern userPattern) throws AdminAccessRequiredException {
-        checkAdminAuthUser(user);
-        // TODO check period overlapping
+    public void addUserPattern(User loggedUser, UserPattern userPattern) throws AdminAccessRequiredException {
+        checkAdminAuthUser(loggedUser);
+        // TODO check period overlapping, and if overlaps, split old periods.
 
         userPattern.setId(getNextId(userPatterns));
         userPatterns.add(userPattern);
     }
 
     @Override
-    public List<UserPattern> readUserPatternList(User user) throws AdminAccessRequiredException {
-        checkAdminAuthUser(user);
+    public List<UserPattern> readUserPatternList() throws AdminAccessRequiredException {
         return userPatterns;
     }
 

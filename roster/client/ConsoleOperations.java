@@ -211,11 +211,11 @@ class ConsoleOperations {
         return getNotEmptyString();
     }
 
-    public void showStatus(User currentUser) {
-        if (currentUser==null)
+    public void showStatus(User loggedUser) {
+        if (loggedUser==null)
             System.out.println("No logged user!");
-        else if (currentUser.isAuthenticated()) {
-            System.out.format("User %s is logged in.\n", currentUser.getLogin());
+        else if (loggedUser.isAuthenticated()) {
+            System.out.format("User %s is logged in.\n", loggedUser.getLogin());
         }
 
     }

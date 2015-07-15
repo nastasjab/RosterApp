@@ -6,6 +6,6 @@ import java.util.List;
 
 public interface IUserPatternService {
     void initialize();
-    void addUserPattern(User user, UserPattern userPattern) throws AdminAccessRequiredException;
-     List<UserPattern> readUserPatternList(User user) throws AdminAccessRequiredException;
+    void addUserPattern(User loggedUser, UserPattern userPattern) throws AdminAccessRequiredException;
+     List<UserPattern> readUserPatternList() throws AdminAccessRequiredException;
 }

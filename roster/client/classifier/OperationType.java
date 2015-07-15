@@ -73,12 +73,11 @@ public class OperationType {
     }
 
     public boolean isAdmin() {
-        // TODO actualize
         return code.startsWith("u") ||
                 code.startsWith("t") ||
                 code.startsWith("p") ||
-                code.startsWith("s") ||
-                code.startsWith("oc")
+                code.startsWith("n") ||
+                code.startsWith("ra")
                 ;
     }
 

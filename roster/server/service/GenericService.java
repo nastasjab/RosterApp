@@ -52,11 +52,10 @@ public abstract class GenericService {
     protected abstract String[] getRecord(GenericObject object);
 
     protected void checkAdminAuthUser(User user) throws AdminAccessRequiredException {
-        //TODO uncomment
-        /*if (user==null ||
+        if (user==null ||
                 !user.getType().equals(UserType.ADMIN) ||
                 !user.isAuthenticated())
             throw new AdminAccessRequiredException();
-            */
+
     }
 }

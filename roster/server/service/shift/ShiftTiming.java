@@ -51,8 +51,8 @@ public class ShiftTiming extends GenericObject{
     public String toString() {
         StringBuilder stringBuilder = new StringBuilder();
 
-        stringBuilder.append(String.format("Shift timing id %d\n", getId()));
-        stringBuilder.append(String.format("Shift timing title %s\n", title));
+        stringBuilder.append(String.format("Shift timing id: %d\n", getId()));
+        stringBuilder.append(String.format("Shift timing title: %s\n", title));
 
 
         stringBuilder.append("Shifts:");

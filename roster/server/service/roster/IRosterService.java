@@ -7,5 +7,5 @@ import service.exception.AdminAccessRequiredException;
 import java.io.IOException;
 
 public interface IRosterService {
-    Roster generateRoster(User currentUser, RosterRequest rosterRequest) throws IOException, AdminAccessRequiredException;
+    Roster generateRoster(User loggedUser, RosterRequest rosterRequest) throws IOException, AdminAccessRequiredException;
 }

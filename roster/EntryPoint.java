@@ -1,14 +1,13 @@
 
 import client.*;
 import client.classifier.OperationType;
-import server.exception.ShiftPatternExistException;
-import server.exception.ShiftTimingExistException;
+import server.exception.*;
 import service.exception.AdminAccessRequiredException;
 
 import java.io.IOException;
 
 class EntryPoint {
-    public static void main(String[] args) throws IOException, ShiftTimingExistException, ShiftPatternExistException, AdminAccessRequiredException {
+    public static void main(String[] args) throws IOException, ShiftTimingExistException, ShiftPatternExistException, AdminAccessRequiredException, InvalidUserTypeException, UserNotExistException, InvalidPasswordException {
         IRosterApp rosterApp = new RosterApp();
 
         OperationType operationType=null;
