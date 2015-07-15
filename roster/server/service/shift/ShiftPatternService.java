@@ -11,25 +11,28 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ShiftPatternService extends GenericService implements IShiftPatternService {
-    private List<ShiftPattern> shiftTimings;
+    private static List<ShiftPattern> shiftPatterns;
 
     public ShiftPatternService() {
-        shiftTimings = new ArrayList<>();
     }
 
     @Override
-    public void addShiftPattern(User currentUser, ShiftPattern shiftTiming) throws ShiftPatternExistException, AdminAccessRequiredException {
+    public void initialize(){
+        shiftPatterns = new ArrayList<>();}
+
+    @Override
+    public void addShiftPattern(User currentUser, ShiftPattern shiftPattern) throws ShiftPatternExistException, AdminAccessRequiredException {
         checkAdminAuthUser(currentUser);
-        if (getShiftPattern(shiftTiming.getTitle()) != null)
+        if (getShiftPattern(shiftPattern.getTitle()) != null)
             throw new ShiftPatternExistException();
 
-        shiftTiming.setId(getNextId(shiftTimings));
-        shiftTimings.add(shiftTiming);
+        shiftPattern.setId(getNextId(shiftPatterns));
+        shiftPatterns.add(shiftPattern);
     }
 
     private ShiftPattern getShiftPattern(final String title) {
-        return shiftTimings == null ? null :
-                shiftTimings.stream().
+        return shiftPatterns == null ? null :
+                shiftPatterns.stream().
                         filter(p -> p.getTitle().equals(title)).
                         findFirst().
                         orElse(null);
@@ -38,8 +41,8 @@ public class ShiftPatternService extends GenericService implements IShiftPattern
     @Override
     public ShiftPattern getShiftPattern(User currentUser, final long id) throws AdminAccessRequiredException {
         checkAdminAuthUser(currentUser);
-        return shiftTimings == null ? null :
-                shiftTimings.stream().
+        return shiftPatterns == null ? null :
+                shiftPatterns.stream().
                         filter(p -> p.getId() == id).
                         findFirst().
                         orElse(null);
@@ -52,13 +55,13 @@ public class ShiftPatternService extends GenericService implements IShiftPattern
         if (getShiftPattern(currentUser,id)==null)
             throw  new ShiftPatternNotExistException();
 
-        shiftTimings.remove(getShiftPattern(currentUser, id));
+        shiftPatterns.remove(getShiftPattern(currentUser, id));
     }
 
     @Override
     public List<ShiftPattern> readShiftPatternList(User currentUser) throws AdminAccessRequiredException {
         checkAdminAuthUser(currentUser);
-        return shiftTimings;
+        return shiftPatterns;
     }
 
     @Override

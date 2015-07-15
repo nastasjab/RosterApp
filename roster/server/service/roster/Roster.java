@@ -17,12 +17,9 @@ public class Roster extends GenericObject {
     private Map<User,List<String>> usersRoster;
 
     public Roster() {
-        published=false;
-        usersRoster = new HashMap<>();
     }
 
     public Roster(int year, int month, long shiftTimingId, User currentUser) throws AdminAccessRequiredException {
-        super();
         this.year = year;
         this.month = month;
         IShiftTimingService shiftTimingService = new ShiftTimingService();
@@ -74,27 +71,41 @@ public class Roster extends GenericObject {
     }
 
     public void addUserRoster(User user, List<String> userRoster) {
-        usersRoster.put(user, userRoster);
+        if (usersRoster==null) this.usersRoster = new HashMap<>();
+        this.usersRoster.put(user, userRoster);
     }
 
     @Override
     public String toString() {
         StringBuilder str = new StringBuilder();
         str.append(String.format("Year: %d  Month: %d\n", year, month));
-        // TODO print info about shift timing
-        str.append(String.format("%60s Day#", " "));
-        str.append(String.format("%20s ", "Employee"));
-        for (int i=1; i<getDaysInMonth(); i++)
-            str.append(String.format("%2s ", i));
+// TODO print info about shift timing
 
-        Iterator it = usersRoster.entrySet().iterator();
-        while (it.hasNext()) {
-            Map.Entry pair = (Map.Entry)it.next();
-            str.append(String.format("%20s ", ((User)pair.getKey()).getNameSurname()));
-            for (int i=0; i< ((List<String>)pair.getValue()).size(); i++)
-                str.append(String.format("%2s ", ((List<String>)pair.getValue()).get(i)));
+        if (usersRoster.isEmpty()) {
+            str.append("<empty>");
+        } else {
+            str.append(String.format("%30s ", " "));
+            str.append(String.format("%40s Day#\n", " "));
 
-            it.remove();
+            str.append(String.format("%-30s |", "Employee"));
+            for (int i = 1; i <= getDaysInMonth(); i++)
+                str.append(String.format("%-2s  ", i));
+
+            str.append("\n");
+            for (int i = 0; i <= 160; i++)
+                str.append("-");
+
+            str.append("\n");
+            Iterator it = usersRoster.entrySet().iterator();
+            while (it.hasNext()) {
+                Map.Entry pair = (Map.Entry) it.next();
+                str.append(String.format("%-30s |", ((User) pair.getKey()).getNameSurname()));
+                for (int i = 0; i < ((List<String>) pair.getValue()).size(); i++)
+                    str.append(String.format("%-2s  ", ((List<String>) pair.getValue()).get(i)));
+
+                str.append("\n");
+                it.remove();
+            }
         }
         return  str.toString();
     }

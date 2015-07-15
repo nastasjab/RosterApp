@@ -14,9 +14,8 @@ public class ShiftTiming extends GenericObject{
     public ShiftTiming() {
     }
 
-    public ShiftTiming(String title, List<Shift> shifts) {
+    public ShiftTiming(String title) {
         this.title = title;
-        this.shifts = shifts;
         shiftCount = shifts==null? 0 : shifts.size();
     }
 

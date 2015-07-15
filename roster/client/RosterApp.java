@@ -6,17 +6,13 @@ import server.service.roster.IRosterService;
 import server.service.roster.Roster;
 import server.service.roster.RosterRequest;
 import server.service.roster.RosterService;
-import server.service.shift.IShiftPatternService;
-import server.service.shift.ShiftPattern;
-import server.service.shift.ShiftPatternService;
-import server.service.shift.IShiftTimingService;
-import server.service.shift.ShiftTiming;
-import server.service.shift.ShiftTimingService;
+import server.service.shift.*;
 import server.service.user.*;
 import client.exception.*;
 import service.exception.AdminAccessRequiredException;
 
 import java.io.IOException;
+import java.util.Date;
 import java.util.List;
 
 public class RosterApp implements IRosterApp {
@@ -30,7 +26,7 @@ public class RosterApp implements IRosterApp {
 	private final ConsoleOperations console;
 
 
-	public RosterApp() {
+	public RosterApp() throws ShiftTimingExistException, AdminAccessRequiredException, ShiftPatternExistException {
 		console = new ConsoleOperations();
 		userService = new UserServiceImpl();
 		shiftTimingService = new ShiftTimingService();
@@ -38,6 +34,28 @@ public class RosterApp implements IRosterApp {
 		userPatternService = new UserPatternService();
 		rosterService = new RosterService();
 		console.showWelcome();
+
+		shiftTimingService.initialize();
+		shiftPatternService.initialize();
+		userPatternService.initialize();
+
+		ShiftTiming shiftTiming = new ShiftTiming("shiftTiming");
+		shiftTiming.addShift(new Shift("8:00","13:00",3));
+		shiftTiming.addShift(new Shift("13:00", "18:00", 2));
+		shiftTimingService.addShiftTiming(currentUser, shiftTiming);
+
+		ShiftPattern shiftPattern = new ShiftPattern();
+		shiftPattern.setTitle("shift pattern");
+		shiftPattern.addDayDefinition("1");
+		shiftPattern.addDayDefinition("2");
+		shiftPattern.addDayDefinition("R");
+		shiftPatternService.addShiftPattern(currentUser, shiftPattern);
+
+		UserPattern userPattern = new UserPattern();
+		userPattern.setUserId(2);
+		userPattern.setShiftPatternId(1);
+		userPattern.setStartDay(new Date());
+		userPatternService.addUserPattern(currentUser, userPattern);
 	}
 
 

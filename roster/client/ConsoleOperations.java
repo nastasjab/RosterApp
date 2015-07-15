@@ -373,6 +373,6 @@ class ConsoleOperations {
 
     public void showRoster(Roster roster) {
         System.out.println();
-        roster.toString();
+        System.out.println(roster.toString());
     }
 }

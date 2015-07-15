@@ -11,11 +11,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ShiftTimingService extends GenericService implements IShiftTimingService {
-    private List<ShiftTiming> shiftTimings;
+    // TODO remove static here, when
+    private static List<ShiftTiming> shiftTimings;
 
     public ShiftTimingService() {
-        shiftTimings = new ArrayList<>();
     }
+
+    @Override
+    public void initialize(){shiftTimings = new ArrayList<>();}
 
     @Override
     public void addShiftTiming(User currentUser, ShiftTiming shiftTiming) throws ShiftTimingExistException, AdminAccessRequiredException {

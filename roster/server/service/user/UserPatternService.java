@@ -8,11 +8,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class UserPatternService extends GenericService implements  IUserPatternService {
-    List<UserPattern> userPatterns;
+    private static List<UserPattern> userPatterns;
 
     public UserPatternService() {
-        this.userPatterns = new ArrayList<>();
     }
+
+    @Override
+    public void initialize(){
+        userPatterns = new ArrayList<>();}
 
     @Override
     public void addUserPattern(User user, UserPattern userPattern) throws AdminAccessRequiredException {

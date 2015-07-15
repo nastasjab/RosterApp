@@ -11,6 +11,7 @@ import service.exception.AdminAccessRequiredException;
 
 import java.io.IOException;
 import java.util.*;
+import java.util.stream.Collectors;
 
 public class RosterService extends GenericService implements  IRosterService {
     @Override
@@ -34,31 +35,31 @@ public class RosterService extends GenericService implements  IRosterService {
                     userPatterns == null ? null :
                             (List<UserPattern>) userPatterns.stream().
                                     filter(p -> p.getUserId() == user.getId()
-                                            && p.getStartDay().compareTo(roster.getEndDay()) <= 0
-                                            && (p.getEndDay()==null || p.getEndDay().compareTo(roster.getStartDay()) >= 0)
-                                    );
+                                                    && p.getStartDay().compareTo(roster.getEndDay()) <= 0
+                                                    && (p.getEndDay() == null || p.getEndDay().compareTo(roster.getStartDay()) >= 0)
+                                    ).collect(Collectors.toList());
             // TODO sort userPattern by starting Day, now use only first pattern
             // TODO assign several patterns, if exists
             // TODO take into account patternStartDay
             Date rosterDate = roster.getStartDay();
             List<String> userRoster=new ArrayList<>();
-            if (actualUserPatterns!=null){
+            if (actualUserPatterns!=null && !actualUserPatterns.isEmpty()){
                 while (rosterDate.compareTo(actualUserPatterns.get(0).getStartDay())<0) {
-                    userRoster.add("R");
-                    addDays(rosterDate, 1);
+                    userRoster.add(" ");
+                    rosterDate = addDays(rosterDate, 1);
                 }
                 ShiftPattern shiftPattern = shiftPatternService.getShiftPattern(currentUser,
                         actualUserPatterns.get(0).getShiftPatternId());
 
                 while (getDay(rosterDate)+shiftPattern.getPatternLength() <= getDay(roster.getEndDay())) {
                     userRoster.addAll(shiftPattern.getDayDefinitions());
-                    addDays(rosterDate, shiftPattern.getPatternLength());
+                    rosterDate = addDays(rosterDate, shiftPattern.getPatternLength());
                 }
 
                 int i=0;
-                while (getDay(rosterDate) <= getDay(roster.getEndDay())) {
+                while (rosterDate.compareTo(roster.getEndDay())<=0) {
                     userRoster.add(shiftPattern.getDayDefinitions().get(i));
-                    addDays(rosterDate, 1);
+                    rosterDate = addDays(rosterDate, 1);
                     i++;
                 }
             }
@@ -80,6 +81,7 @@ public class RosterService extends GenericService implements  IRosterService {
     private static int getDay(Date date)
     {
         Calendar cal = Calendar.getInstance();
+        cal.setTime(date);
         return cal.get(Calendar.DAY_OF_MONTH);
     }
 
