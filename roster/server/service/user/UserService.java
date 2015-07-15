@@ -12,9 +12,7 @@ import java.util.List;
 
 public abstract class UserService extends GenericService implements IUserService {
     public void addUser(User user) throws UserExistException, IOException {
-        User user2 = new User();
-
-        List<User> users = readUserList();
+       List<User> users = readUserList();
         if(getUser(users, user.getLogin())==null) {
             user.setId(getNextId(users));
             users.add(user);

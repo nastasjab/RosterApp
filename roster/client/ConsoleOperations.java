@@ -345,7 +345,7 @@ class ConsoleOperations {
         if (checkEmptyList(userPatterns))
             return;
 
-        System.out.format("%7s %7s %10s %10s\n", "User", "Pattern", "Start", "End", "Pattern dat to start");
+        System.out.format("%7s %7s %10s %10s %s\n", "User", "Pattern", "Start", "End", "Pattern dat to start");
         System.out.println("-------------------------------------------");
         for (UserPattern userPattern: userPatterns) {
             System.out.println(userPattern.toString());

@@ -32,7 +32,7 @@ public class RosterService extends GenericService implements  IRosterService {
             return  roster;
 
         for (User user : users) {
-            if (skipUser(user, rosterRequest)) continue;;
+            if (skipUser(user, rosterRequest)) continue;
 
             List<UserPattern> actualUserPatterns = getActualUserPatterns(user, roster.getStartDay(), roster.getEndDay());
 
@@ -50,7 +50,7 @@ public class RosterService extends GenericService implements  IRosterService {
 
                 rosterCalcDate = fillRosterWithFullPattern(userRoster, rosterCalcDate, shiftPattern, roster.getEndDay());
 
-                rosterCalcDate = fillRosterWithPatternPart(userRoster, rosterCalcDate, shiftPattern, roster.getEndDay());
+                fillRosterWithPatternPart(userRoster, rosterCalcDate, shiftPattern, roster.getEndDay());
             }
             roster.addUserRoster(user, userRoster);
         }
@@ -63,14 +63,13 @@ public class RosterService extends GenericService implements  IRosterService {
         return shiftPatternService.getShiftPattern(shiftPatternId);
     }
 
-    private Date fillRosterWithPatternPart(List<String> userRoster, Date rosterCalcDate, ShiftPattern shiftPattern, Date endDay) {
+    private void fillRosterWithPatternPart(List<String> userRoster, Date rosterCalcDate, ShiftPattern shiftPattern, Date endDay) {
         int i=0;
         while (rosterCalcDate.compareTo(endDay)<=0) {
             userRoster.add(shiftPattern.getDayDefinitions().get(i));
             rosterCalcDate = addDays(rosterCalcDate, 1);
             i++;
         }
-        return rosterCalcDate;
     }
 
     private Date fillRosterWithFullPattern(List<String> userRoster, Date rosterCalcDate, ShiftPattern shiftPattern, Date rosterEndDate) {
@@ -91,8 +90,7 @@ public class RosterService extends GenericService implements  IRosterService {
 
     private boolean skipUser(User user, RosterRequest rosterRequest) {
         if (!user.getType().equals(UserType.USER)) return true;
-        if (rosterRequest.getUserId()!=0 && user.getId()!=rosterRequest.getUserId()) return true;
-        return false;
+        return rosterRequest.getUserId() != 0 && user.getId() != rosterRequest.getUserId();
     }
 
     private List<UserPattern> getActualUserPatterns(User user, Date startDate, Date endDate) throws AdminAccessRequiredException {
